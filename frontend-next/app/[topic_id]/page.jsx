@@ -10,6 +10,9 @@ const Dashboard = ({ params }) => {
 
   return (
     <div className='flex flex-row h-screen border'>
+        <div className='w-7/10'>
+         Hi
+        </div>
       <div className='w-1/5'>
         <ChatInterface topic_id={params.topic_id} />
       </div>
