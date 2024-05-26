@@ -13,14 +13,13 @@ const ChatInterface = ({ topic_id }) => {
   const [userInput, setUserInput] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedSuggestion, setSelectedSuggestion] = useState('');
-  const [status, setStatus] = useState('');
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
   const [visibleSql, setVisibleSql] = useState(null);
 
   const fetchChatHistory = async () => {
     try {
       const response = await fetch(`${baseURL}/api/v0/api/v0/get_history`, {
-        method: 'POST', // Assume POST is required
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -29,19 +28,40 @@ const ChatInterface = ({ topic_id }) => {
         }),
       });
       const data = await response.json();
-      setMessages(data.chat_history);
+      setMessages(data.chat_history.map(msg => ({
+        ...msg,
+        message: parseMarkdown(msg.message)
+      })));
     } catch (error) {
       console.error('Error fetching chat history:', error);
     }
   };
 
-  // Fetch and poll chat history every second
   useEffect(() => {
-    fetchChatHistory();  // Call immediately on mount
-    const intervalId = setInterval(fetchChatHistory, 1000);  // Set up the interval
+    fetchChatHistory();
+    const intervalId = setInterval(fetchChatHistory, 1000);
+    return () => clearInterval(intervalId);
+  }, [topic_id, baseURL]);
 
-    return () => clearInterval(intervalId);  // Clean up on component unmount
-  }, [topic_id, baseURL]);  // Dependencies array, re-run if these values change
+  const parseMarkdown = (text) => {
+    // Handling bold and bullet points
+    let html = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+                   .replace(/\n/g, '<br />'); // New line
+
+    // Handling bullet points
+    html = html.split('<br />').map(line => {
+      if (line.startsWith('* ')) {
+        return `<li>${line.substring(2)}</li>`; // Remove '* ' and wrap with <li>
+      } else {
+        return line;
+      }
+    }).join('<br />');
+
+    // Wrap lines that became <li> with <ul>
+    html = html.replace(/(<li>.*?<\/li>)/g, '<ul>$1</ul>');
+
+    return html;
+  };
 
   const handleSuggestionClick = (suggestion) => {
     setUserInput(suggestion);
@@ -59,8 +79,6 @@ const ChatInterface = ({ topic_id }) => {
           body: JSON.stringify({ human_message: userInput, topic_key: topic_id }), 
         });
         setUserInput('');
-
-        // Optionally, trigger a refresh immediately after send
         fetchChatHistory();
       } catch (error) {
         console.error('Error sending message:', error);
@@ -81,11 +99,11 @@ const ChatInterface = ({ topic_id }) => {
               <span>{msg.role === 'Human' ? 'User' : msg.role}</span>
               {msg.sql && (
                 <button onClick={() => toggleSqlVisibility(index)} title="Show SQL">
-                  <SqlIcon />
+                  <SqlIcon /> {/* Assuming you have an SvgIcon component for SQL */}
                 </button>
               )}
             </div>
-            <p className="mt-2">{msg.message}</p>
+            <div className="mt-2" dangerouslySetInnerHTML={{ __html: msg.message }}></div>
             {visibleSql === index && (
               <div className="mt-2 p-2 bg-gray-200 rounded">
                 <code>{msg.sql}</code>

@@ -6,10 +6,7 @@ import { renderWaterfallChart } from './Graphs/renderWaterfallChart';
 
 function DashboardComponent({ topic_id }) {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-  const [data, setData] = useState(() => {
-    const savedData = sessionStorage.getItem('myData');
-    return savedData ? JSON.parse(savedData) : [];
-  });  
+  const [data, setData] = useState([]);  
   
   // Fetch initial chat history on component mount    
   useEffect(() => {
@@ -34,12 +31,6 @@ function DashboardComponent({ topic_id }) {
     };
 
     // Check if running in the browser before using sessionStorage
-    if (typeof window !== 'undefined') {
-      const savedData = sessionStorage.getItem('myData');
-      if (savedData) {
-        setData(JSON.parse(savedData));
-      }
-    }
     fetchDashboardHistory();
     const intervalId = setInterval(fetchDashboardHistory, 3000); // Poll every second
     return () => clearInterval(intervalId);
