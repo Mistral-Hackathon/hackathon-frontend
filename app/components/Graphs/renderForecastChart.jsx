@@ -51,7 +51,7 @@ export function renderForecastChart(data, containerSelector) {
     // Confidence Interval Area
     svg.append('path')
         .datum(data.data_x_axis.map((d, i) => ({ x: d, y0: data.data_y_axis_lower[i], y1: data.data_y_axis_upper[i] })))
-        .attr('fill', '#cce5df')
+        .attr('fill', '#FFE8C8')
         .attr('stroke', 'none')
         .attr('d', d3.area()
             .x(d => x(d.x))
@@ -66,7 +66,7 @@ export function renderForecastChart(data, containerSelector) {
     svg.append('path')
         .datum(data.data_y_axis)
         .attr('fill', 'none')
-        .attr('stroke', 'steelblue')
+        .attr('stroke', '#3b3010')
         .attr('stroke-width', 1.5)
         .attr('d', line);
 

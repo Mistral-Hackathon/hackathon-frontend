@@ -33,12 +33,12 @@ const ChatTopicHistory = () => {
 
 
   return (
-    <div className='h-screen bg-gradient-to-b from-black to-lime-900'>
+    <div className='h-screen bg-gradient-to-b from-mistral-yellow to-mistral-red'>
       <ul className='flex flex-col'>
         {topics.map((topic) => (
           <li 
             key={topic.id} 
-            className="flex items-center whitespace-nowrap overflow-hidden overflow-ellipsis pl-2 pt-3 text-white hover:bg-gray-300 h-12 text-sm"
+            className="flex items-center justify-center whitespace-nowrap overflow-hidden overflow-ellipsis pl-2 pt-3 text-black hover:bg-gray-300 h-12 text-s font-bold"
             title={topic.name}
             onClick={() => onTopicClick(topic.id)}
           >

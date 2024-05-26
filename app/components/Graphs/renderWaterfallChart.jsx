@@ -66,8 +66,8 @@ export function renderWaterfallChart(inputData, containerSelector) {
     return Math.abs(xScale(d.value) - xScale(0)); // Width based on the value difference
     })
     .attr('fill', (d, i) => {
-    if (i === 0) return 'blue'; // First bar color
-    return d.value >= 0 ? 'lightgreen' : 'lightcoral'; // Color based on positive or negative value
+    if (i === 0) return '#FFA62F'; // First bar color
+    return d.value >= 0 ? '#ACD793' : '#FFE8C8'; // Color based on positive or negative value
     });
   
     // Axes

@@ -7,10 +7,17 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'mistral-red': '#e83429',
+        'mistral-yellow': '#F7CF46',
+      },
       backgroundImage: {
       },
       backgroundColor: {
         'dark-green': '#2C3639',
+        'dark-orange': '#e83429',
+        'light-orange': '#F7CF46',
+
       },
       keyframes: {
         typing: {

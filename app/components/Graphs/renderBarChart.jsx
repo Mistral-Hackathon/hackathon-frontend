@@ -32,7 +32,7 @@ svg.selectAll('rect')
     .attr('y', d => yScale(d))
     .attr('width', xScale.bandwidth())
     .attr('height', d => height - yScale(d))
-    .attr('fill', '#69b3a2')
+    .attr('fill', (d, i) => i % 2 === 0 ? '#FFA62F' : '#FFE8C8')
     .on('mouseover', function(event, d) {
     d3.select(this).style('opacity', 0.5); // Set opacity to 50% on hover
     d3.select("#tooltip")

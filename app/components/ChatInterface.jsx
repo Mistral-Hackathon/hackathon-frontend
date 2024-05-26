@@ -99,7 +99,7 @@ const ChatInterface = ({ topic_id }) => {
               <span>{msg.role === 'Human' ? 'User' : msg.role}</span>
               {msg.sql && (
                 <button onClick={() => toggleSqlVisibility(index)} title="Show SQL">
-                  <SqlIcon /> {/* Assuming you have an SvgIcon component for SQL */}
+                  <SqlIcon /> 
                 </button>
               )}
             </div>
